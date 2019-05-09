@@ -26,7 +26,7 @@ devtools::install_github("jmeskas/flowCut")
 #if the above flowCut install does not work then use the one below
 devtools::install_github("hally166/flowCut")
 ```
-* Create folders as shown here: D:/BDQC     D:/BDQC/Archive     D:/BDQC/Images    D:/BDQC/Summaries
+* Create folders as shown here: D:/BDQC, D:/BDQC/Archive, D:/BDQC/Images, D:/BDQC/Summaries
 * Put the scripts (R and PowerShell) into BDQC.
 * Create a free gmail account and change the security settings to ‘less secure’ to allow scripted emails to be sent.
 * Open the PowerShell script and change the “Username” and “Password” to those of the Gmail account.  Change the “From” to your Gmail email, the “To” to wherever you want to send it, and the "Subject" to anything you want.
