@@ -8,6 +8,8 @@ The idea here is to test user sample quality by checking time vs fluorescence, a
 Here I list all the newest fcs files (since that last check) and run them through the R package flowCut (https://github.com/jmeskas/flowCut) which looks for deviations in fluorescence over time.  The script then plots and records the “bad” files and emails the output to you.  The script also records other metrics of instrument usage and saves it as a csv file. 
 
 Currently it only works in DIVA (as we have 3 BD machines), but when it is working well I will apply it to the CytoFlex too.  
+The output currently looks like this.
+![example image](/example.png)
 
 ## Instructions
 * Install R
