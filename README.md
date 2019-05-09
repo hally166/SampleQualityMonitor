@@ -5,7 +5,7 @@ Autonomously monitor user sample quality for flow cytometers
 
 The idea here is to test user sample quality by checking time vs fluorescence, as we do during analysis, but at the time of acquisition.  This allows the core facility to be proactive helping our users spot problematic experiments and allows us to check for machine issues, such as recurrent blockages. 
 
-Here I list all the newest fcs files (since that last check) and run them through the R package flowCut which looks for deviations in fluorescence over time.  The script then plots and records the “bad” files and emails the output to you.  The script also records other metrics of instrument usage and saves it as a csv file. 
+Here I list all the newest fcs files (since that last check) and run them through the R package flowCut (https://github.com/jmeskas/flowCut) which looks for deviations in fluorescence over time.  The script then plots and records the “bad” files and emails the output to you.  The script also records other metrics of instrument usage and saves it as a csv file. 
 
 Currently it only works in DIVA (as we have 3 BD machines), but when it is working well I will apply it to the CytoFlex too.  
 
@@ -23,6 +23,10 @@ devtools::install_github("jmeskas/flowCut")
 devtools::install_github("hally166/flowCut")
 ```
 * Create some folders as shown here:
+    > D:/BDQC
+    > D:/BDQC/Archive
+    > D:/BDQC/Images
+    > D:/BDQC/Summaries
 * Put the scripts (R and PowerShell) into BDQC.
 * Create a free gmail account and change the security settings to ‘less secure’ to allow scripted emails to be sent.
 * Open the PowerShell script and change the “Username” and “Password” to those of the Gmail account.  Change the “From” to your Gmail email and the “To” to wherever you want to send it.
