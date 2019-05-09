@@ -9,11 +9,13 @@ I list all the newest fcs files (since that last check) and run them through the
 
 Currently it only works in DIVA (as we have 3 BD machines), but when it is working well I will apply it to the CytoFlex too.  
 The output currently looks like this.
+
 ![example image](/example.png)
 
 The big question is; how do you report this to the user?  We are still working on that.
 
 ## Instructions
+On the flow cytometer PC.
 * Install R
 * Install the required R packages using:
 ```R
