@@ -18,7 +18,7 @@ csvOUT<- "D:/BDQC/Summaries/"
 #how far to go back in the database
 if (file.exists(paste(csvOUT,"Summary",".csv", sep=""))) {
   LatestDate<-as.Date(tail(read.csv(paste(csvOUT,"Summary",".csv", sep=""))$DateTested, n=1), "%a %d %b %Y")
-} else { LatestDate<- as.Date("2019-01-01")
+} else { LatestDate<- Sys.Date()-1
 }
 
 #function that runs flowCut and outputs the data
