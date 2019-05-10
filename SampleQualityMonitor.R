@@ -52,7 +52,9 @@ data4df1<-lapply(newfiles,QCfunction)
 df1<-do.call("rbind", data4df1)
 
 #Sumarise today's data
+command <- "$FSO = New-Object -ComObject Scripting.FileSystemObject ; $FSO.GetFolder('D:/BDDatabase/BDData').Size"
 df2 <- data.frame(DateTested=toString(format(Sys.time(), "%a %d %b %Y")),
+                  DatabaseSizeGb=as.numeric(system2("powershell", args = command, stdout = TRUE))/1000000000,
                   TotalAcquisitions=nrow(df1),
                   TotalEvents=sum(as.numeric(as.character(unlist(df1['TotalEvents'])))),
                   TotalMins=sum(as.numeric(as.character(unlist(df1['SecondsAnalysed']))))/60,
