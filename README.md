@@ -3,6 +3,8 @@ Autonomously monitor user sample quality for flow cytometers
 
 ### This is alpha quality.  It is still under active development and should not be considered finished.
 
+Please pay attention to the licenses of the imported packages. Specifically flowCut is for academic use only.
+
 The idea here is to test user sample quality by checking time vs fluorescence, as we do during analysis, but at the time of acquisition.  This allows the core facility to be proactive helping our users spot problematic experiments and allows us to check for machine issues, such as recurrent blockages. 
 
 I list all the newest fcs files (since that last check) and run them through the R package flowCut (https://github.com/jmeskas/flowCut) which looks for deviations in fluorescence over time.  The script then plots and records the “bad” files and emails the output to you.  The script also records other metrics of instrument usage and saves it as a csv file. 
