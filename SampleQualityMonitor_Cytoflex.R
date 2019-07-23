@@ -7,7 +7,6 @@ library(flowCore)
 library(flowCut)
 library(flowDensity)
 library(xtable)
-install.packages("xtable")
 
 #list all the files in the BD DIVA database
 files <- list.files(path="C:/Users/ch15/Desktop/BEET193", pattern=".fcs$", full.names = TRUE, recursive = TRUE)
