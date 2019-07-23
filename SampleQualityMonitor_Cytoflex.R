@@ -1,4 +1,4 @@
-#Sample Quality Monitor script for checking user data quality autonomously
+#Sample Quality Monitor script for checking user data quality autonomously - Currently NOT plotting!
 #Christopher Hall, Wellcome Sanger Institute Cytometry Core Facility, ch15@sanger.ac.uk
 #GPL-3.0
 
