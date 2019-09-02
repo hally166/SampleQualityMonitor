@@ -1,4 +1,4 @@
-#Sample Quality Monitor script for checking user data quality autonomously - Currently NOT plotting!
+#Sample Quality Monitor script for checking user data quality autonomously
 #Christopher Hall, Wellcome Sanger Institute Cytometry Core Facility, ch15@sanger.ac.uk
 #GPL-3.0
 
@@ -8,12 +8,12 @@ library(flowCut)
 library(flowDensity)
 library(xtable)
 
-#list all the files in the BD DIVA database
-files <- list.files(path="C:/Users/ch15/Desktop/BEET193", pattern=".fcs$", full.names = TRUE, recursive = TRUE)
+#list all the files in the Cytoflex data folder - change to the location fo your data folder. recursive = TRUE searches subfolders too
+files <- list.files(path="C:/Users/Operator/Documents/CytExpert Data", pattern=".fcs$", full.names = TRUE, recursive = TRUE)
 
 #specify the locations of the export folders
-imageLocation<-"C:/Users/ch15/Desktop/BEET193/Images/"
-csvOUT<- "C:/Users/ch15/Desktop/BEET193/Summaries/"
+imageLocation<-"C:/Users/Operator/Documents/QC/Images/"
+csvOUT<- "C:/Users/Operator/Documents/QC/Summaries/"
 
 #how far to go back in the database
 if (file.exists(paste(csvOUT,"Summary",".csv", sep=""))) {
@@ -25,19 +25,16 @@ if (file.exists(paste(csvOUT,"Summary",".csv", sep=""))) {
 QCfunction<- function(filename){
   fcsfile <- try(read.FCS(filename))
   if (class(fcsfile) == 'flowFrame'){
-    if (!as.Date(keyword(fcsfile)["$DATE"][[1]], format = "%d-%b-%Y")>=LatestDate){
+    if (as.Date(keyword(fcsfile)["$DATE"][[1]], format = "%d-%b-%Y")>=LatestDate){
       res_flowCut <- try(flowCut(fcsfile, Plot="None"))
       if (class(res_flowCut) == 'list'){
-        data4df1 <- data.frame(fcsFileName=keyword(fcsfile)["$FIL"][[1]],
-                               TubeName=keyword(fcsfile)["TBNM"][[1]],
-                               #ExperimentName=keyword(fcsfile)["EXPERIMENT NAME"][[1]],
+        data4df1 <- data.frame(TubeName=keyword(fcsfile)["TBNM"][[1]],
                                Date=toString(keyword(fcsfile)["$DATE"][[1]]),
-                               SecondsAnalysed=strptime((keyword(fcsfile)["$ETIM"][[1]]), format = '%H:%M:%S')-strptime((keyword(fcsfile)["$BTIM"][[1]]), format = '%H:%M:%S'),
-                               #UserName=keyword(fcsfile)['EXPORT USER NAME'][[1]],
                                PlateOrTube=if(is.null(keyword(fcsfile)['WELL ID'][[1]])) "Tube" else "Plate",
                                TotalEvents=as.numeric(keyword(fcsfile)["$TOT"][[1]]),
                                EventsRemoved=res_flowCut$data[13],
                                WorstChannel=if(is.integer(res_flowCut$worstChan)) res_flowCut$worstChan else "0",
+                               fcsFileName=filename,
                                stringsAsFactors=FALSE)
         data4df1['EventsRemoved'][data4df1['EventsRemoved']==""] <- 0
         return(data4df1)
@@ -47,26 +44,24 @@ QCfunction<- function(filename){
 }
 
 #run the flowCut function on the newest files and create df1
-newfiles<-Filter(function(x) as.Date(file.info(x)$ctime, format = "%d-%b-%Y")>=LatestDate, files)
+newfiles<-Filter(function(x) as.Date(file.info(x)$ctime, format = "%Y-%m-%d")>=LatestDate, files)
 df1<-do.call("rbind", lapply(newfiles,QCfunction))
 
 #Sumarise today's data
-#command <- "$FSO = New-Object -ComObject Scripting.FileSystemObject ; $FSO.GetFolder('D:/BDDatabase/BDData').Size"
+command <- "$FSO = New-Object -ComObject Scripting.FileSystemObject ; $FSO.GetFolder('C:/Users/Operator/Documents/CytExpert Data').Size"
 df2 <- data.frame(DateTested=toString(format(Sys.time(), "%a %d %b %Y")),
-                  #DatabaseSizeGb=as.numeric(system2("powershell", args = command, stdout = TRUE))/1000000000,
+                  CytExpertFolderSizeGb=as.numeric(system2("powershell", args = command, stdout = TRUE))/1000000000,
+                  NewExperimentFolders=length(unique(as.character(lapply(strsplit(as.character(files), split="/"), head, n=-1)))),
                   TotalAcquisitions=nrow(df1),
                   TotalEvents=sum(as.numeric(as.character(unlist(df1['TotalEvents'])))),
-                  TotalMins=sum(as.numeric(as.character(unlist(df1['SecondsAnalysed']))))/60,
-                  #TotalExperiments=sapply(df1['ExperimentName'], function(x) length(unique(x))),
-                  #TotalUsers=sapply(df1['UserName'], function(x) length(unique(x))),
                   RatioTubePlate=table(df1['PlateOrTube'])["Tube"]/table(df1['PlateOrTube'])["Plate"],
                   NumberOfBadAcquisitions=sum(as.numeric(as.character(unlist(df1['EventsRemoved']))) > 10),
                   stringsAsFactors=FALSE)
 
 #subset df1 looking for the bad data
 df3<-subset(df1, as.numeric(as.character(unlist(df1['EventsRemoved']))) > 10)
-badfilelist<-paste("C:/Users/ch15/Desktop/BEET193/", df3[[1]], sep="")
-worstchannellist<- df3[[8]]
+badfilelist<-df3[[7]]
+worstchannellist<- df3[[6]]
 
 #function for plotting
 BadFilePlot<- function(badfilelist, worstchannellist){
@@ -75,7 +70,7 @@ BadFilePlot<- function(badfilelist, worstchannellist){
     trans <- estimateLogicle(toplot, colnames(toplot[,as.integer(worstchannellist)]))
     fcsfile_trans <- transform(toplot, trans)
     png(paste(imageLocation,keyword(fcsfile_trans)["$FIL"][[1]],".png", sep = ""))
-    plotDens(fcsfile_trans, c(1,as.integer(worstchannellist)),cex=5,main=keyword(fcsfile_trans)["$FIL"][[1]])
+    plotDens(fcsfile_trans, c("Time",colnames(toplot)[[as.integer(worstchannellist)]]),cex=5,main=keyword(fcsfile_trans)["$FIL"][[1]])
     dev.off()
   } 
 }
