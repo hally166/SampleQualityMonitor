@@ -37,6 +37,8 @@ devtools::install_github("hally166/flowCut")
 * Open the PowerShell script and change the “Username” and “Password” to those of the Gmail account.  Change the “From” to your Gmail email, the “To” to wherever you want to send it, and the "Subject" to anything you want.  Check that the location of the Rscript.exe is correct.
 * Go to Windows Task Scheduler and add a task to run each morning that runs the program “Powershell.exe” with this argument:
 > -ExecutionPolicy ByPass -File D:\BDQC\powershell.ps1
+
 or something similar to this for the Cytolfex
+
 > -ExecutionPolicy ByPass -File C:\Users\Operator\Documents\QC\powershell.ps1
 * Test the script by running it now.  If it does not work go into R and run the R script line by line to see where it is failing.  If it passes do the same with the PowerShell script.  The biggest issue I have found so far is memory management.  DIVA is only 32bit, restricting the PC to 4GB of RAM, which is not ideal.  I have done a few things to reduce the memory footprint of the script, but as a fall back it will skip any files too large to be loaded into memory.  A future version will count these, but not this version.  It's best to get the script to run first thing, before starting to properly use the PC.
