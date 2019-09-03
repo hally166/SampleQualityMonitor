@@ -34,7 +34,7 @@ devtools::install_github("hally166/flowCut")
 * For Cytoflex machines create /QC/Images, /QC/Summaries, /QC/Archive
 * Put the scripts (R and PowerShell) into BDQC or QC folder.
 * Create a free gmail account and change the security settings to ‘less secure’ to allow scripted emails to be sent.
-* Open the PowerShell script and change the “Username” and “Password” to those of the Gmail account.  Change the “From” to your Gmail email, the “To” to wherever you want to send it, and the "Subject" to anything you want.  Check that the location of the Rscript.exe is correct.
+* Open the PowerShell script and change the “Username” and “Password” to those of the Gmail account.  Change the “From” to your Gmail email, the “To” to wherever you want to send it, and the "Subject" to anything you want.  Check that the location of the Rscript.exe is correct and that the location of the file folders is correct.
 * Go to Windows Task Scheduler and add a task to run each morning that runs the program “Powershell.exe” with this argument:
 > -ExecutionPolicy ByPass -File D:\BDQC\powershell.ps1
 
