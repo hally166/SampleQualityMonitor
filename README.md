@@ -1,3 +1,7 @@
+I have produced a second version of this package that is easier to deploy and use. It saves the data to a network drive instead of emailing it to reduce the difficulty in its installation. The new version also removes the Sanger specific statistics making it more applicable to other facilities without changing the code.
+This version still works, but I probably won't be updating it.
+Find it on GitHub here: https://github.com/hally166/ProactiveCoreDefense
+
 # SampleQualityMonitor
 Autonomously monitor user sample quality for flow cytometers
 
